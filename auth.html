@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SJB | Login</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="container topbar">
+    <a class="brand" href="index.html">
+      <img src="logo1.png" alt="SJB Logo">
+      <div>
+        <div class="title">SJB</div>
+        <div class="subtitle">Unlock Your Potential</div>
+      </div>
+    </a>
+
+    <nav class="nav">
+      <a href="index.html" data-i18n="navHome">Home</a>
+      <a href="jobs.html" data-i18n="navJobs">Jobs</a>
+      <a href="auth.html" class="active" data-i18n="navLogin">Login</a>
+      <a href="#" id="navDash" data-i18n="navDash">Dashboard</a>
+    </nav>
+
+    <div class="actions">
+      <button class="lang" id="langBtn">AR</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="hero">
+      <h1 data-i18n="authTitle">Sign in / Create account</h1>
+      <div class="decor"><span></span><i></i><i></i><span></span></div>
+    </div>
+
+    <div class="panel">
+      <div class="stack" style="justify-content:space-between;align-items:center">
+        <div>
+          <div class="badgeRole" id="roleLabel">Student/User</div>
+          <div class="small" style="margin-top:6px">Use Google or Facebook for real sign-in, or use the form below.</div>
+        </div>
+        <div class="stack">
+          <button type="button" class="btn primary" data-role="user" data-i18n="roleStudent">Student/User</button>
+          <button type="button" class="btn" data-role="company" data-i18n="roleCompany">Company</button>
+          <button type="button" class="btn" data-role="admin" data-i18n="roleAdmin">Admin</button>
+        </div>
+      </div>
+
+      <div class="hr"></div>
+
+      <form id="authForm" data-auth-mode="signin">
+        <input type="hidden" id="authRole" value="user">
+        <div class="formGrid">
+          <div class="field">
+            <label data-i18n="name">Full Name</label>
+            <input id="authName" type="text" placeholder="(optional)" />
+          </div>
+
+          <div class="field" id="locationField" style="display:none">
+            <label data-i18n="location">Location</label>
+            <input id="authLocation" type="text" placeholder="Cairo / Alexandria / Remote" />
+          </div>
+
+          <div class="field">
+            <label data-i18n="email">Email</label>
+            <input id="authEmail" type="email" required />
+          </div>
+
+          <div class="field">
+            <label data-i18n="password">Password</label>
+            <input id="authPassword" type="password" required />
+          </div>
+        </div>
+
+        <div class="stack" style="margin-top:14px; justify-content:flex-end">
+          <button class="btn primary" type="submit" data-i18n="signIn">Sign In</button>
+        </div>
+      </form>
+
+      <div class="hr"></div>
+
+      <div class="small" data-i18n="orContinue">or continue with</div>
+      <div class="stack" style="margin-top:10px">
+        <button class="btn outline oauthBtn" type="button" data-provider="google">Continue with Google</button>
+        <button class="btn outline oauthBtn" type="button" data-provider="facebook">Continue with Facebook</button>
+        <button class="btn outline oauthBtn" type="button" data-provider="apple" disabled>Apple (Coming Soon)</button>
+      </div>
+      <div class="small" style="margin-top:10px">
+        Google and Facebook sign-in use the Django backend on <b>http://127.0.0.1:8000</b>.
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">© 2026 Student Job Board. All rights reserved.</div>
+  </footer>
+
+  <script src="i18n.js"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const roleButtons = document.querySelectorAll("[data-role]");
+      const locationField = document.getElementById("locationField");
+
+      locationField.style.display = "none";
+
+      roleButtons.forEach(btn => {
+        btn.addEventListener("click", function () {
+          const role = btn.getAttribute("data-role");
+          locationField.style.display = role === "company" ? "block" : "none";
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+{% load static %}
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SJB | Student Job Board</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}" />
+</head>
+
+<body>
+
+<header class="container topbar">
+  <a class="brand" href="{% url 'home' %}">
+    <img src="{% static 'logo1.png' %}" alt="SJB Logo">
+    <div>
+      <div class="title">SJB</div>
+      <div class="subtitle" data-i18n="brandSubtitle">Unlock Your Potential</div>
+    </div>
+  </a>
+
+  <nav class="nav">
+      <a href="{% url 'home' %}" data-i18n="navHome">Home</a>
+      <a href="{% url 'jobs' %}" data-i18n="navJobs">Jobs</a>
+      {% if user.is_authenticated %}
+        {% if user.role == 'student' %}
+          <a href="{% url 'dashboard-user' %}" id="navDash" data-i18n="navDash">Dashboard</a>
+        {% elif user.role == 'company' %}
+          <a href="{% url 'dashboard-company' %}" id="navDash" data-i18n="navDash">Dashboard</a>
+        {% elif user.role == 'admin' %}
+          <a href="{% url 'dashboard-admin' %}" id="navDash" data-i18n="navDash">Dashboard</a>
+        {% endif %}
+        <a href="{% url 'logout' %}" id="navLogin" data-i18n="logout">Logout</a>
+      {% else %}
+        <a href="{% url 'auth' %}" id="navLogin" data-i18n="navLogin">Login</a>
+        <a href="{% url 'signup' %}" id="navReg" data-i18n="Register">Register</a>
+      {% endif %}
+  </nav>
+
+  <div class="actions">
+    <button class="lang" id="langBtn">AR</button>
+    <a class="btn primary" href="{% url 'jobs' %}" data-i18n="exploreJobs">Explore Jobs</a>
+    {% if user.is_authenticated %}
+      {% if user.role == 'student' %}
+        <a class="btn outline" href="{% url 'dashboard-user' %}" data-i18n="navDash">Dashboard</a>
+      {% elif user.role == 'company' %}
+        <a class="btn outline" href="{% url 'dashboard-company' %}" data-i18n="navDash">Dashboard</a>
+      {% elif user.role == 'admin' %}
+        <a class="btn outline" href="{% url 'dashboard-admin' %}" data-i18n="navDash">Dashboard</a>
+      {% endif %}
+    {% else %}
+      <a class="btn outline" href="{% url 'signup' %}" data-i18n="createAccount">Create Account</a>
+    {% endif %}
+  </div>
+</header>
+
+
+<main class="container">
+
+<!-- Hero -->
+<section class="hero">
+
+<h1 data-i18n="homeTitle">Student Job Board</h1>
+
+<div class="small" style="margin-top:10px" data-i18n="homeDesc">
+A simple platform that connects students with jobs & internships, and helps companies hire faster.
+</div>
+
+<div class="decor">
+<span></span>
+<i></i>
+<i></i>
+<span></span>
+</div>
+
+<div class="stack" style="justify-content:center; margin-top:14px">
+<a class="btn primary" href="{% url 'jobs' %}" data-i18n="browseJobs">Browse Jobs</a>
+{% if user.is_authenticated %}
+  {% if user.role == 'student' %}
+    <a class="btn outline" href="{% url 'dashboard-user' %}" data-i18n="navDash">Dashboard</a>
+  {% elif user.role == 'company' %}
+    <a class="btn outline" href="{% url 'dashboard-company' %}" data-i18n="navDash">Dashboard</a>
+  {% elif user.role == 'admin' %}
+    <a class="btn outline" href="{% url 'dashboard-admin' %}" data-i18n="navDash">Dashboard</a>
+  {% endif %}
+{% else %}
+  <a class="btn outline" href="{% url 'signup' %}" data-i18n="createAccount">Create Account</a>
+{% endif %}
+</div>
+
+</section>
+
+
+<!-- Roles Section -->
+
+<section class="panel role-card" style="margin-top:18px">
+
+<div class="grid">
+
+
+<!-- Students -->
+
+<div class="panel role-card">
+
+<div class="cardContent">
+
+<div class="badgeRole" data-i18n="roleStudent">
+Student/User
+</div>
+
+<h3 data-i18n="forStudents">
+For Students
+</h3>
+
+
+
+</div>
+
+<div class="cardAction">
+<a class="btn accent" href="{% url 'jobs' %}" data-i18n="startApplying">
+Start Applying
+</a>
+</div>
+
+</div>
+
+
+
+<!-- Companies -->
+
+<div class="panel role-card">
+
+<div class="cardContent">
+
+<div class="badgeRole" data-i18n="roleCompany">
+Company
+</div>
+
+<h3 data-i18n="forCompanies">
+For Companies
+</h3>
+
+
+
+</div>
+
+<div class="cardAction">
+<a class="btn accent" href="{% url 'auth' %}" data-i18n="companyLogin">
+Company Login
+</a>
+</div>
+
+</div>
+
+
+
+<!-- Admin -->
+
+<div class="panel role-card">
+
+<div class="cardContent">
+
+<div class="badgeRole" data-i18n="roleAdmin">
+Admin
+</div>
+
+<h3 data-i18n="forAdmin">
+For Admin
+</h3>
+
+
+
+</div>
+
+<div class="cardAction">
+<a class="btn accent" href="{% url 'auth' %}" data-i18n="openDashboard">
+Open Dashboard
+</a>
+</div>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+</main>
+
+
+
+<footer class="footer">
+<div class="container" data-i18n="footerText">
+© 2026 Student Job Board. All rights reserved.
+</div>
+</footer>
+
+
+
+<script src="{% static 'i18n.js' %}"></script>
+<script src="{% static 'data.js' %}"></script>
+<script src="{% static 'app.js' %}"></script>
+
+</body>
+</html>

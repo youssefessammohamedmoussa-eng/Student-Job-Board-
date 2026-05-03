@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SJB | Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+
+<body>
+
+<header class="container topbar">
+  <a class="brand" href="index.html">
+    <img src="logo1.png" alt="SJB Logo">
+    <div>
+      <div class="title">SJB</div>
+      <div class="subtitle">Unlock Your Potential</div>
+    </div>
+  </a>
+
+  <nav class="nav">
+    <a href="index.html">Home</a>
+    <a href="jobs.html">Jobs</a>
+    <a href="dashboard-admin.html" class="active">Dashboard</a>
+  </nav>
+
+  <div class="actions">
+    <button class="lang" id="langBtn">AR</button>
+    <a class="btn outline" href="profile-admin.html">Profile</a>
+    <button class="btn outline" onclick="logout()">Logout</button>
+  </div>
+</header>
+
+<main class="container">
+  <!-- ✨ هنا بيتعرض كل محتوى الأدمن -->
+  <div id="adminWrap"></div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    © 2026 Student Job Board. All rights reserved.
+  </div>
+</footer>
+
+<script src="i18n.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
+
+
+

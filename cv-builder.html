@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SJB | CV Builder</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="container topbar">
+    <a class="brand" href="index.html">
+      <img src="logo1.png" alt="SJB Logo">
+      <div>
+        <div class="title">SJB</div>
+        <div class="subtitle" data-i18n="brandSubtitle">Unlock Your Potential</div>
+      </div>
+    </a>
+
+    <nav class="nav">
+      <a href="index.html" data-i18n="navHome">Home</a>
+      <a href="jobs.html" data-i18n="navJobs">Jobs</a>
+      <a href="auth.html" id="navLogin" data-i18n="navLogin">Login</a>
+      <a href="auth.html" id="navDash" data-i18n="navDash">Dashboard</a>
+    </nav>
+
+    <div class="actions">
+      <button class="lang" id="langBtn">AR</button>
+    </div>
+  </header>
+
+  <main class="container cvBuilderPage">
+    <section class="hero">
+      <h1 data-i18n="cvBuilderTitle">CV Builder</h1>
+      <div class="small" style="margin-top:10px" data-i18n="cvBuilderDesc">
+        Build a polished CV, save it locally in SJB, and print it as a PDF when you are ready.
+      </div>
+      <div class="decor"><span></span><i></i><i></i><span></span></div>
+    </section>
+
+    <section class="panel featureBanner">
+      <div>
+        <div class="badgeRole" data-i18n="cvBuilderFormTitle">Build Your Details</div>
+        <h2 style="margin:10px 0 0" data-i18n="cvBuilderPreviewTitle">Live CV Preview</h2>
+        <div class="small" style="margin-top:8px" data-i18n="cvPreviewHint">
+          Use the print button to open your browser's Save as PDF flow with the preview already formatted.
+        </div>
+      </div>
+      <div class="stack">
+        <button type="button" class="btn outline" id="resetCvTopBtn" data-i18n="cvReset">Reset CV</button>
+        <a class="btn outline" href="dashboard-user.html" data-i18n="navDash">Dashboard</a>
+        <a class="btn accent" href="jobs.html" data-i18n="browseJobs">Browse Jobs</a>
+      </div>
+    </section>
+
+    <div class="cvBuilderLayout">
+      <section class="panel cvBuilderEditor">
+        <form id="cvBuilderForm">
+          <div class="formGrid">
+            <div class="field">
+              <label data-i18n="name">Full Name</label>
+              <input id="fullName" type="text" placeholder="Your full name" />
+            </div>
+
+            <div class="field">
+              <label data-i18n="cvTargetRole">Target Role</label>
+              <input id="role" type="text" placeholder="Frontend Developer Intern" />
+            </div>
+
+            <div class="field">
+              <label data-i18n="email">Email</label>
+              <input id="email" type="email" placeholder="you@example.com" />
+            </div>
+
+            <div class="field">
+              <label data-i18n="phone">Mobile Number</label>
+              <input id="phone" type="tel" placeholder="+20 100 000 0000" />
+            </div>
+
+            <div class="field">
+              <label data-i18n="location">Location</label>
+              <input id="location" type="text" placeholder="Cairo, Egypt" />
+            </div>
+
+            <div class="field">
+              <label data-i18n="cvWebsite">Website / Portfolio</label>
+              <input id="website" type="text" placeholder="portfolio.example.com" />
+            </div>
+
+            <div class="field" style="grid-column:1/-1">
+              <label data-i18n="cvSummary">Professional Summary</label>
+              <textarea id="summary" placeholder="Write 2-4 lines that quickly explain your strengths, goals, and what you bring to a team."></textarea>
+            </div>
+
+            <div class="field">
+              <label data-i18n="cvSkills">Skills</label>
+              <input id="skills" type="text" placeholder="JavaScript, React, UI Design, SQL" />
+            </div>
+
+            <div class="field">
+              <label data-i18n="cvLanguages">Languages</label>
+              <input id="languages" type="text" placeholder="Arabic, English" />
+            </div>
+          </div>
+
+          <div class="cvSection">
+            <div class="cvSectionHead">
+              <div class="badgeRole" data-i18n="cvEducation">Education</div>
+              <button type="button" class="btn outline" id="addEducationBtn" data-i18n="cvAddEducation">Add Education</button>
+            </div>
+            <div class="repeaterList" id="educationItems"></div>
+          </div>
+
+          <div class="cvSection">
+            <div class="cvSectionHead">
+              <div class="badgeRole" data-i18n="cvExperience">Experience</div>
+              <button type="button" class="btn outline" id="addExperienceBtn" data-i18n="cvAddExperience">Add Experience</button>
+            </div>
+            <div class="repeaterList" id="experienceItems"></div>
+          </div>
+
+          <div class="cvSection">
+            <div class="cvSectionHead">
+              <div class="badgeRole" data-i18n="cvProjects">Projects</div>
+              <button type="button" class="btn outline" id="addProjectBtn" data-i18n="cvAddProject">Add Project</button>
+            </div>
+            <div class="repeaterList" id="projectsItems"></div>
+          </div>
+
+          <div class="stack btnRowEnd" style="margin-top:20px">
+            <button type="button" class="btn outline" id="resetCvBtn" data-i18n="cvReset">Reset CV</button>
+            <button type="button" class="btn primary" id="saveCvBtn" data-i18n="cvSaveDraft">Save Draft</button>
+            <button type="button" class="btn accent" id="printCvBtn" data-i18n="cvPrint">Print / Save PDF</button>
+          </div>
+
+          <div class="small" id="cvSaveStatus" style="margin-top:12px"></div>
+        </form>
+      </section>
+
+      <section class="panel cvBuilderPreviewPanel">
+        <div class="badgeRole" data-i18n="cvBuilderPreviewTitle">Live CV Preview</div>
+        <div class="small previewNote" data-i18n="cvPreviewHint">
+          Use the print button to open your browser's Save as PDF flow with the preview already formatted.
+        </div>
+        <div class="cvSheet" id="cvPreviewSheet"></div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container" data-i18n="footerText">© 2026 Student Job Board. All rights reserved.</div>
+  </footer>
+
+  <script src="i18n.js"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+  <script src="cv-builder.js"></script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SJB | Company Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+
+<body>
+  <header class="container topbar">
+    <a class="brand" href="index.html">
+      <img src="logo1.png" alt="SJB Logo">
+      <div>
+        <div class="title">SJB</div>
+        <div class="subtitle" data-i18n="brandSubtitle">Unlock Your Potential</div>
+      </div>
+    </a>
+
+    <nav class="nav">
+      <a href="index.html" data-i18n="navHome">Home</a>
+      <a href="jobs.html" data-i18n="navJobs">Jobs</a>
+      <a href="dashboard-company.html" class="active" data-i18n="navDash">Dashboard</a>
+    </nav>
+
+    <div class="actions">
+      <button class="lang" id="langBtn">AR</button>
+      <a class="btn outline" href="profile-company.html">Profile</a>
+      <a class="btn outline" href="company-payment.html" data-i18n="companyBilling">Billing</a>
+      <button class="btn accent" type="button" onclick="openPostJob()" data-i18n="companyPost">Post a Job</button>
+      <button class="btn outline" type="button" onclick="logout()" data-i18n="logout">Logout</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="hero">
+      <h1 data-i18n="companyDashTitle">Company Dashboard</h1>
+      <div class="small" style="margin-top:10px" data-i18n="companyDashDesc">
+        Post jobs and review applicants (demo stored in localStorage).
+      </div>
+      <div class="decor"><span></span><i></i><i></i><span></span></div>
+    </div>
+
+    <div id="companyBillingPanel"></div>
+    <div id="companyJobsWrap" style="margin-top:18px"></div>
+  </main>
+
+  <!-- Post Job Modal -->
+  <div class="modalOverlay" id="postOverlay" onclick="if(event.target.id==='postOverlay') closePostJob()">
+    <div class="modal">
+      <div class="modalHeader">
+        <h3 data-i18n="companyPost">Post a Job</h3>
+        <button class="btn outline" type="button" onclick="closePostJob()" data-i18n="close">Close</button>
+      </div>
+      <div class="hr"></div>
+
+      <form id="postJobForm">
+        <div class="formGrid">
+          <div class="field">
+            <label data-i18n="jobTitle">Title</label>
+            <input id="pjTitle" type="text" required />
+          </div>
+
+          <div class="field">
+            <label data-i18n="location">Location</label>
+            <input id="pjLocation" type="text" placeholder="Cairo / Alexandria / Remote" required />
+          </div>
+
+          <div class="field">
+            <label data-i18n="filterType">Job Type</label>
+            <select id="pjType">
+              <option>Full Time</option>
+              <option>Part Time</option>
+              <option>Internship</option>
+            </select>
+          </div>
+
+          <div class="field" style="grid-column:1/-1">
+            <label data-i18n="description">Description</label>
+            <textarea id="pjDesc" required></textarea>
+          </div>
+        </div>
+
+        <div class="stack" style="margin-top:14px; justify-content:flex-end">
+          <button class="btn accent" type="submit" data-i18n="publish">Publish</button>
+        </div>
+      </form>
+
+      <div class="small" style="margin-top:10px" data-i18n="companyNote">
+        (Demo) Posted jobs are saved in localStorage.
+      </div>
+    </div>
+  </div>
+
+  <!-- Applicants Modal -->
+  <div class="modalOverlay" id="applicantsOverlay" onclick="if(event.target.id==='applicantsOverlay') closeApplicants()">
+    <div class="modal">
+      <div class="modalHeader">
+        <h3 data-i18n="companyApps">Applicants</h3>
+        <button class="btn outline" type="button" onclick="closeApplicants()" data-i18n="close">Close</button>
+      </div>
+      <div class="hr"></div>
+      <div id="applicantsBody"></div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container" data-i18n="footerText">© 2026 Student Job Board. All rights reserved.</div>
+  </footer>
+
+  <script src="i18n.js"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
+
+

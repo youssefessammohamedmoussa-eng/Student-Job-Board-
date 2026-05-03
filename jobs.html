@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SJB | Jobs</title>
+  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+<body>
+  <header class="container topbar">
+    <a class="brand" href="index.html">
+      <img src="logo1.png" alt="SJB Logo">
+      <div>
+        <div class="title">SJB</div>
+        <div class="subtitle" data-i18n="brandSubtitle">Unlock Your Potential</div>
+      </div>
+    </a>
+
+    <nav class="nav">
+      <a href="index.html" data-i18n="navHome">Home</a>
+      <a href="jobs.html" data-i18n="navJobs" class="active">Jobs</a>
+      <a href="auth.html" id="navLogin" data-i18n="navLogin">Login</a>
+      <a href="auth.html" id="navDash" data-i18n="navDash">Dashboard</a>
+    </nav>
+
+    <div class="actions">
+      <button class="lang" id="langBtn">AR</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="hero">
+      <h1 data-i18n="heroTitle">Available Jobs</h1>
+
+      <div class="small" id="resultCount" style="margin-top:12px"></div>
+
+      <div class="grid" id="jobsGrid" style="margin-top:16px;"></div>
+
+      <div class="panel" id="emptyState" style="display:none; margin-top:16px; text-align:center">
+        <h3 style="margin:0" data-i18n="emptyTitle">No results</h3>
+        <div class="small" style="margin-top:6px" data-i18n="emptyDesc">
+          Try changing filters or search keywords.
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container" data-i18n="footerText">© 2026 Student Job Board. All rights reserved.</div>
+  </footer>
+
+  <script src="i18n.js"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
+
+

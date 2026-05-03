@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SJB | User Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+
+<body>
+  <header class="container topbar">
+    <a class="brand" href="index.html">
+      <img src="logo1.png" alt="SJB Logo">
+      <div>
+        <div class="title">SJB</div>
+        <div class="subtitle" data-i18n="brandSubtitle">Unlock Your Potential</div>
+      </div>
+    </a>
+
+    <nav class="nav">
+      <a href="index.html" data-i18n="navHome">Home</a>
+      <a href="jobs.html" data-i18n="navJobs">Jobs</a>
+      <a href="dashboard-user.html" class="active" data-i18n="navDash">Dashboard</a>
+    </nav>
+
+    <div class="actions">
+      <button class="lang" id="langBtn">AR</button>
+      <a class="btn outline" href="profile-user.html">Profile</a>
+      <button class="btn outline" onclick="logout()" data-i18n="logout">Logout</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="hero">
+      <h1 data-i18n="userDashTitle">My Applications</h1>
+      <div class="small" style="margin-top:6px" data-i18n="userDashDesc">
+        Track all jobs you applied for in one place.
+      </div>
+      <div class="decor"><span></span><i></i><i></i><span></span></div>
+      <div class="stack" style="justify-content:center; margin-top:14px">
+        <a class="btn primary" href="cv-builder.html" data-i18n="openCvBuilder">Open CV Builder</a>
+        <a class="btn outline" href="jobs.html" data-i18n="browseJobs">Browse Jobs</a>
+      </div>
+    </div>
+
+    <section class="panel" id="userCvPanel"></section>
+    <div id="userAppsTable" style="margin-top:18px"></div>
+  </main>
+
+  <footer class="footer">
+    <div class="container" data-i18n="footerText">© 2026 Student Job Board. All rights reserved.</div>
+  </footer>
+
+  <script src="i18n.js"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

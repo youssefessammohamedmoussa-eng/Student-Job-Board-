@@ -1,0 +1,154 @@
+{% load static %}
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SJB | Login</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}" />
+</head>
+<body>
+  <header class="container topbar">
+    <a class="brand" href="{% url 'home' %}">
+      <img src="{% static 'logo1.png' %}" alt="SJB Logo">
+      <div>
+        <div class="title">SJB</div>
+        <div class="subtitle">Unlock Your Potential</div>
+      </div>
+    </a>
+
+    <nav class="nav">
+      <a href="{% url 'home' %}" data-i18n="navHome">Home</a>
+      <a href="{% url 'jobs' %}" data-i18n="navJobs">Jobs</a>
+      <a href="{% url 'auth' %}" class="active" data-i18n="navLogin">Login</a>
+      <a href="#" id="navDash" data-i18n="navDash">Dashboard</a>
+    </nav>
+
+    <div class="actions">
+      <button class="lang" id="langBtn">AR</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="hero">
+      <h1 data-i18n="authTitle">Sign in / Create account</h1>
+      <div class="decor"><span></span><i></i><i></i><span></span></div>
+    </div>
+
+    <div class="panel">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="panel" style="color:#b91c1c;border-color:#fca5a5;margin-bottom:1rem;text-align:center;font-weight:700;">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      {% if error %}
+        <div class="panel" style="color:#b91c1c;border-color:#fca5a5;margin-bottom:1rem;text-align:center;font-weight:700;">
+          {{ error }}
+        </div>
+      {% endif %}
+
+      <div class="stack" style="justify-content:space-between;align-items:center">
+        <div>
+          <div class="badgeRole" id="roleLabel">Student/User</div>
+          <div class="small" style="margin-top:6px">Use Google or Facebook for real sign-in, or use the form below.</div>
+        </div>
+        <div class="stack">
+          <button type="button" class="btn primary roleBtn" data-role="user" data-i18n="roleStudent">Student/User</button>
+          <button type="button" class="btn roleBtn" data-role="company" data-i18n="roleCompany">Company</button>
+          <button type="button" class="btn roleBtn" data-role="admin" data-i18n="roleAdmin">Admin</button>
+        </div>
+      </div>
+
+      <div class="hr"></div>
+
+      <form id="authForm" method="POST" action="{% url 'auth' %}">
+        {% csrf_token %}
+        <input type="hidden" name="role" id="authRole" value="user">
+        <div class="formGrid">
+          <div class="field">
+            <label data-i18n="name">Full Name</label>
+            <input id="authName" type="text" placeholder="(optional)" />
+          </div>
+
+          <div class="field" id="locationField" style="display:none">
+            <label data-i18n="location">Location</label>
+            <input id="authLocation" type="text" placeholder="Cairo / Alexandria / Remote" />
+          </div>
+
+          <div class="field">
+            <label data-i18n="email">Email</label>
+            <input id="authEmail" name="username" type="email" required />
+          </div>
+
+          <div class="field">
+            <label data-i18n="password">Password</label>
+            <input id="authPassword" name="password" type="password" required />
+          </div>
+        </div>
+
+        <div class="stack" style="margin-top:14px; justify-content:flex-end">
+          <button class="btn primary" type="submit" data-i18n="signIn">Sign In</button>
+        </div>
+      </form>
+
+      <div class="hr"></div>
+
+      <div class="small" data-i18n="orContinue">or continue with</div>
+      <div class="stack" style="margin-top:10px">
+        <a id="googleAuthLink" class="btn outline" href="{% url 'google-login' %}?role=student" style="text-decoration:none">Continue with Google</a>
+        <a id="facebookAuthLink" class="btn outline" href="{% url 'facebook-login' %}?role=student" style="text-decoration:none">Continue with Facebook</a>
+        <button class="btn outline" type="button" disabled>Apple (Coming Soon)</button>
+      </div>
+      <div class="small" style="margin-top:10px">Admin accounts use email and password.</div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">© 2026 Student Job Board. All rights reserved.</div>
+  </footer>
+
+  <script src="{% static 'i18n.js' %}"></script>
+  <script src="{% static 'data.js' %}"></script>
+  <script src="{% static 'app.js' %}"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const roleButtons = document.querySelectorAll(".roleBtn");
+      const locationField = document.getElementById("locationField");
+      const roleInput = document.getElementById("authRole");
+      const roleLabel = document.getElementById("roleLabel");
+      const googleAuthLink = document.getElementById("googleAuthLink");
+      const facebookAuthLink = document.getElementById("facebookAuthLink");
+
+      function updateProviderLinks(role) {
+        const backendRole = role === "user" ? "student" : role;
+        googleAuthLink.href = `{% url 'google-login' %}?role=${backendRole}`;
+        facebookAuthLink.href = `{% url 'facebook-login' %}?role=${backendRole}`;
+        googleAuthLink.style.pointerEvents = backendRole === "admin" ? "none" : "";
+        googleAuthLink.style.opacity = backendRole === "admin" ? "0.55" : "1";
+        facebookAuthLink.style.pointerEvents = backendRole === "admin" ? "none" : "";
+        facebookAuthLink.style.opacity = backendRole === "admin" ? "0.55" : "1";
+      }
+
+      locationField.style.display = "none";
+      updateProviderLinks("user");
+
+      roleButtons.forEach(btn => {
+        btn.addEventListener("click", function () {
+          const role = btn.getAttribute("data-role");
+
+          roleButtons.forEach(item => item.classList.remove("primary"));
+          btn.classList.add("primary");
+
+          roleInput.value = role;
+          roleLabel.textContent = btn.textContent;
+          locationField.style.display = role === "company" ? "block" : "none";
+          updateProviderLinks(role);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

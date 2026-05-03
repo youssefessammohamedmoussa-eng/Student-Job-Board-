@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SJB | Company Payment</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="container topbar">
+    <a class="brand" href="index.html">
+      <img src="logo1.png" alt="SJB Logo">
+      <div>
+        <div class="title">SJB</div>
+        <div class="subtitle" data-i18n="brandSubtitle">Unlock Your Potential</div>
+      </div>
+    </a>
+
+    <nav class="nav">
+      <a href="index.html" data-i18n="navHome">Home</a>
+      <a href="jobs.html" data-i18n="navJobs">Jobs</a>
+      <a href="dashboard-company.html" data-i18n="navDash">Dashboard</a>
+      <a href="company-payment.html" class="active" data-i18n="companyBilling">Billing</a>
+    </nav>
+
+    <div class="actions">
+      <button class="lang" id="langBtn">AR</button>
+      <a class="btn outline" href="dashboard-company.html" data-i18n="navDash">Dashboard</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1 data-i18n="companyPaymentTitle">Company Payment</h1>
+      <div class="small" style="margin-top:10px" data-i18n="companyPaymentDesc">
+        Pick a plan for your company and save a demo card if your plan needs billing.
+      </div>
+      <div class="decor"><span></span><i></i><i></i><span></span></div>
+    </section>
+
+    <section class="panel featureBanner">
+      <div>
+        <div class="badgeRole" data-i18n="companyPaymentHeroBadge">Company Billing</div>
+        <h2 style="margin:10px 0 0" data-i18n="companyBillingTitle">Billing & Plan</h2>
+        <div class="small" style="margin-top:8px" data-i18n="companyBillingDesc">
+          Choose a plan, save a demo payment method, and keep your company account ready to hire.
+        </div>
+      </div>
+      <div class="stack">
+        <a class="btn outline" href="dashboard-company.html" data-i18n="navDash">Dashboard</a>
+        <a class="btn accent" href="jobs.html" data-i18n="navJobs">Jobs</a>
+      </div>
+    </section>
+
+    <div id="companyPaymentAccess" style="margin-top:18px"></div>
+
+    <div class="companyPaymentLayout" id="companyPaymentLayout">
+      <section class="panel">
+        <div class="dashboardCardHead">
+          <div>
+            <div class="badgeRole" data-i18n="companyPaymentPlansTitle">Choose Your Plan</div>
+            <h3 style="margin:10px 0 0" data-i18n="companyPaymentFormTitle">Billing Details</h3>
+          </div>
+        </div>
+
+        <div id="companyPlansGrid" class="pricingGrid" style="margin-top:16px"></div>
+
+        <div class="hr"></div>
+
+        <form id="companyPaymentForm">
+          <div class="formGrid">
+            <div class="field">
+              <label data-i18n="companyPaymentCompanyName">Company Name</label>
+              <input id="billingCompanyName" type="text" required />
+            </div>
+
+            <div class="field">
+              <label data-i18n="companyPaymentInvoiceEmail">Billing Email</label>
+              <input id="billingEmail" type="email" required />
+            </div>
+
+            <div class="field" data-paid-field="true">
+              <label data-i18n="companyPaymentCardName">Name on Card</label>
+              <input id="billingCardName" type="text" required />
+            </div>
+
+            <div class="field" data-paid-field="true">
+              <label data-i18n="companyPaymentCardNumber">Card Number</label>
+              <input id="billingCardNumber" type="text" inputmode="numeric" maxlength="19" required />
+            </div>
+
+            <div class="field" data-paid-field="true">
+              <label data-i18n="companyPaymentExpiry">Expiry (MM/YY)</label>
+              <input id="billingExpiry" type="text" inputmode="numeric" maxlength="5" required />
+            </div>
+
+            <div class="field" data-paid-field="true">
+              <label data-i18n="companyPaymentCvv">CVV</label>
+              <input id="billingCvv" type="password" inputmode="numeric" maxlength="4" required />
+            </div>
+          </div>
+
+          <div class="small" id="companyPaymentSecureNote" style="margin-top:12px" data-i18n="companyPaymentSecureNote">
+            Demo only. Billing details stay in this browser and only the last 4 digits are displayed later.
+          </div>
+
+          <div class="stack btnRowEnd" style="margin-top:18px">
+            <button class="btn primary" type="submit" data-i18n="companyPaymentSubmit">Confirm Payment</button>
+          </div>
+        </form>
+      </section>
+
+      <aside class="panel companyPaymentSummaryPanel">
+        <div class="badgeRole" data-i18n="companyPaymentSummaryTitle">Order Summary</div>
+        <div class="small" style="margin-top:10px" data-i18n="companyPaymentSummaryHint">
+          Review your selected plan before you confirm payment.
+        </div>
+        <div id="companyPaymentSummary" style="margin-top:16px"></div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container" data-i18n="footerText">© 2026 Student Job Board. All rights reserved.</div>
+  </footer>
+
+  <script src="i18n.js"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+  <script src="company-payment.js"></script>
+</body>
+</html>
