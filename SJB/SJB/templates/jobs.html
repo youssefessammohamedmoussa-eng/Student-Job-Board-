@@ -1,0 +1,85 @@
+{% load static %}
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SJB | Jobs</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <header class="container topbar">
+    <a class="brand" href="{% url 'home' %}">
+      <img src="{% static 'logo1.png' %}" alt="SJB Logo">
+      <div>
+        <div class="title">SJB</div>
+        <div class="subtitle" data-i18n="Unlock Your Potential">Unlock Your Potential</div>
+      </div>
+    </a>
+
+    <nav class="nav">
+      <a href="{% url 'home' %}" data-i18n="navHome">Home</a>
+      <a href="{% url 'jobs' %}" class="active" data-i18n="navJobs">Jobs</a>
+      {% if user.is_authenticated %}
+        {% if user.role == 'student' %}
+          <a href="{% url 'dashboard-user' %}" id="navDash" data-i18n="navDash">Dashboard</a>
+        {% elif user.role == 'company' %}
+          <a href="{% url 'dashboard-company' %}" id="navDash" data-i18n="navDash">Dashboard</a>
+        {% elif user.role == 'admin' %}
+          <a href="{% url 'dashboard-admin' %}" id="navDash" data-i18n="navDash">Dashboard</a>
+        {% endif %}
+        <a href="{% url 'logout' %}" id="navLogin" data-i18n="logout">Logout</a>
+      {% else %}
+        <a href="{% url 'auth' %}" id="navLogin" data-i18n="navLogin">Login</a>
+        <a href="{% url 'signup' %}" id="navReg" data-i18n="SignUp">Register</a>
+      {% endif %}
+    </nav>
+
+    <div class="actions">
+      <button class="lang" id="langBtn">AR</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="hero">
+      <h1 data-i18n="heroTitle">Available Jobs</h1>
+      
+      <div class="stack" style="justify-content:center; margin-top:20px; gap:10px; flex-wrap:wrap;">
+        <select class="btn outline" id="locSelect" style="background:#fff">
+          <option value="all" data-i18n="filterLoc">All Locations</option>
+          <option value="cairo" data-i18n="locCairo">Cairo</option>
+          <option value="alexandria" data-i18n="locAlex">Alexandria</option>
+          <option value="remote" data-i18n="locRemote">Remote</option>
+        </select>
+
+        <select class="btn outline" id="typeSelect" style="background:#fff">
+          <option value="all" data-i18n="filterType">Job Type</option>
+          <option value="fulltime" data-i18n="typeFull">Full Time</option>
+          <option value="parttime" data-i18n="typePart">Part Time</option>
+          <option value="internship" data-i18n="typeIntern">Internship</option>
+        </select>
+      </div>
+
+      <div class="small" id="resultCount" style="margin-top:12px"></div>
+
+      <div class="grid" id="jobsGrid" style="margin-top:16px;"></div>
+
+      <div class="panel" id="emptyState" style="display:none; margin-top:16px; text-align:center">
+        <h3 style="margin:0" data-i18n="emptyTitle">No results</h3>
+        <div class="small" style="margin-top:6px" data-i18n="emptyDesc">
+          Try changing filters or search keywords.
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container" data-i18n="footerText">© 2026 Student Job Board. All rights reserved.</div>
+  </footer>
+
+  <script src="{% static 'i18n.js' %}"></script>
+  <script src="{% static 'data.js' %}"></script>
+  <script src="{% static 'app.js' %}"></script>
+</body>
+</html>

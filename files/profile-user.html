@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SJB | My Profile</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .profileHero {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    .avatarCircle {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      font-size: 36px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 4px solid var(--primary-soft);
+      flex-shrink: 0;
+    }
+    .profileMeta h2 { margin: 0 0 4px; font-size: 22px; }
+    .profileMeta .small { color: var(--muted); }
+    .profileGrid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 18px;
+    }
+    @media(max-width:640px){ .profileGrid { grid-template-columns: 1fr; } }
+    .profileCard {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+    }
+    .profileCard h4 {
+      margin: 0 0 16px;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      color: var(--muted);
+    }
+    .infoRow {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .infoItem label {
+      font-size: 12px;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 3px;
+      font-weight: 600;
+    }
+    .infoItem input, .infoItem select {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--text);
+      background: var(--bg);
+      outline: none;
+      transition: border-color .2s;
+    }
+    .infoItem input:focus { border-color: var(--primary); background: #fff; }
+    .infoItem input[readonly] {
+      color: var(--muted);
+      cursor: default;
+    }
+    .statsRow {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+    .statBox {
+      flex: 1;
+      min-width: 100px;
+      background: var(--primary-soft);
+      border-radius: 14px;
+      padding: 16px 14px;
+      text-align: center;
+    }
+    .statBox .num { font-size: 28px; font-weight: 900; color: var(--primary); }
+    .statBox .lbl { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .profileFullCard { grid-column: 1 / -1; }
+    .saveBar {
+      margin-top: 18px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary);
+      color: #fff;
+      padding: 12px 28px;
+      border-radius: 40px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 8px 24px rgba(11,58,103,.25);
+      opacity: 0;
+      transition: opacity .3s;
+      pointer-events: none;
+      z-index: 9999;
+    }
+    .toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+
+<header class="container topbar">
+  <a class="brand" href="index.html">
+    <img src="logo1.png" alt="SJB Logo">
+    <div>
+      <div class="title">SJB</div>
+      <div class="subtitle" data-i18n="brandSubtitle">Unlock Your Potential</div>
+    </div>
+  </a>
+  <nav class="nav">
+    <a href="index.html" data-i18n="navHome">Home</a>
+    <a href="jobs.html" data-i18n="navJobs">Jobs</a>
+    <a href="dashboard-user.html" data-i18n="navDash">Dashboard</a>
+    <a href="profile-user.html" class="active">Profile</a>
+  </nav>
+  <div class="actions">
+    <button class="lang" id="langBtn">AR</button>
+    <button class="btn outline" onclick="logout()" data-i18n="logout">Logout</button>
+  </div>
+</header>
+
+<main class="container">
+  <div class="hero">
+    <h1>My Profile</h1>
+    <div class="small" style="margin-top:6px">View and update your personal information.</div>
+    <div class="decor"><span></span><i></i><i></i><span></span></div>
+  </div>
+
+  <div id="accessGuard"></div>
+
+  <div id="profileBody" style="display:none">
+    <!-- Profile Hero Banner -->
+    <section class="panel" style="margin-bottom:18px">
+      <div class="profileHero">
+        <div class="avatarCircle" id="avatarLetter">?</div>
+        <div class="profileMeta">
+          <h2 id="heroName">—</h2>
+          <div class="small" id="heroEmail">—</div>
+          <div class="meta" style="margin-top:8px">
+            <span class="pill green">Student / User</span>
+            <span class="pill" id="heroLocation">—</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="statsRow">
+        <div class="statBox">
+          <div class="num" id="statApps">0</div>
+          <div class="lbl">Applications</div>
+        </div>
+        <div class="statBox">
+          <div class="num" id="statCv">—</div>
+          <div class="lbl">CV Status</div>
+        </div>
+        <div class="statBox">
+          <div class="num" id="statJoined">—</div>
+          <div class="lbl">Member Since</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Edit Grid -->
+    <div class="profileGrid">
+
+      <!-- Personal Info -->
+      <div class="profileCard">
+        <h4>Personal Info</h4>
+        <div class="infoRow">
+          <div class="infoItem">
+            <label>Full Name</label>
+            <input id="pFullName" type="text" placeholder="Your full name" />
+          </div>
+          <div class="infoItem">
+            <label>Email</label>
+            <input id="pEmail" type="email" placeholder="you@example.com" />
+          </div>
+          <div class="infoItem">
+            <label>Phone</label>
+            <input id="pPhone" type="tel" placeholder="+20 100 000 0000" />
+          </div>
+          <div class="infoItem">
+            <label>Location</label>
+            <input id="pLocation" type="text" placeholder="Cairo, Egypt" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Account Info -->
+      <div class="profileCard">
+        <h4>Account</h4>
+        <div class="infoRow">
+          <div class="infoItem">
+            <label>Role</label>
+            <input value="Student / User" readonly />
+          </div>
+          <div class="infoItem">
+            <label>University / School</label>
+            <input id="pUniversity" type="text" placeholder="Cairo University" />
+          </div>
+          <div class="infoItem">
+            <label>Field of Study</label>
+            <input id="pField" type="text" placeholder="Computer Science" />
+          </div>
+          <div class="infoItem">
+            <label>Graduation Year</label>
+            <input id="pGradYear" type="text" placeholder="2026" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Bio / Summary -->
+      <div class="profileCard profileFullCard">
+        <h4>Bio / Summary</h4>
+        <div class="infoItem">
+          <label>Short Bio</label>
+          <textarea id="pBio" rows="4" style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:10px;font-size:14px;resize:vertical;background:var(--bg);outline:none;" placeholder="Tell employers a little about yourself..."></textarea>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="saveBar">
+      <button class="btn outline" onclick="resetProfile()">Discard</button>
+      <button class="btn primary" onclick="saveProfile()">Save Changes</button>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container" data-i18n="footerText">© 2026 Student Job Board. All rights reserved.</div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script src="i18n.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script>
+(function(){
+  const PROFILE_KEY = "sjb_user_profile_ext";
+
+  function showToast(msg){
+    const el = document.getElementById("toast");
+    el.textContent = msg;
+    el.classList.add("show");
+    setTimeout(()=> el.classList.remove("show"), 2600);
+  }
+
+  function loadProfile(){
+    const user = (typeof getUser === "function") ? getUser() : null;
+    const role = (typeof getRole === "function") ? getRole() : null;
+    const guard = document.getElementById("accessGuard");
+    const body  = document.getElementById("profileBody");
+
+    if(!user || role !== "user"){
+      body.style.display = "none";
+      guard.innerHTML = `
+        <section class="panel" style="text-align:center">
+          <div class="badgeRole">Access Restricted</div>
+          <div class="small" style="margin-top:10px">This page is for student accounts. Please log in as a student/user.</div>
+          <div class="stack" style="justify-content:center;margin-top:14px">
+            <a class="btn primary" href="auth.html">Login</a>
+            <a class="btn outline" href="index.html">Home</a>
+          </div>
+        </section>`;
+      return;
+    }
+
+    guard.innerHTML = "";
+    body.style.display = "block";
+
+    // Load extended profile
+    const ext = JSON.parse(localStorage.getItem(PROFILE_KEY) || "{}");
+
+    // Hero
+    document.getElementById("avatarLetter").textContent = (user.name || "?").slice(0,1).toUpperCase();
+    document.getElementById("heroName").textContent = user.name || "—";
+    document.getElementById("heroEmail").textContent = user.email || "—";
+    document.getElementById("heroLocation").textContent = ext.location || user.location || "No location set";
+
+    // Stats
+    const apps = JSON.parse(localStorage.getItem("sjb_applications") || "[]");
+    document.getElementById("statApps").textContent = apps.length;
+    const cv = localStorage.getItem("sjb_cv_draft");
+    document.getElementById("statCv").textContent = cv ? "✓ Saved" : "None";
+    document.getElementById("statJoined").textContent = ext.joined || new Date().getFullYear();
+
+    // Form fields
+    document.getElementById("pFullName").value  = user.name || "";
+    document.getElementById("pEmail").value     = user.email || "";
+    document.getElementById("pPhone").value     = ext.phone || "";
+    document.getElementById("pLocation").value  = ext.location || user.location || "";
+    document.getElementById("pUniversity").value = ext.university || "";
+    document.getElementById("pField").value     = ext.field || "";
+    document.getElementById("pGradYear").value  = ext.gradYear || "";
+    document.getElementById("pBio").value       = ext.bio || "";
+  }
+
+  window.saveProfile = function(){
+    const ext = JSON.parse(localStorage.getItem(PROFILE_KEY) || "{}");
+    ext.phone      = document.getElementById("pPhone").value.trim();
+    ext.location   = document.getElementById("pLocation").value.trim();
+    ext.university = document.getElementById("pUniversity").value.trim();
+    ext.field      = document.getElementById("pField").value.trim();
+    ext.gradYear   = document.getElementById("pGradYear").value.trim();
+    ext.bio        = document.getElementById("pBio").value.trim();
+    if(!ext.joined) ext.joined = new Date().getFullYear();
+
+    // Update name/email on session user object
+    const user = (typeof getUser === "function") ? getUser() : {};
+    const newName  = document.getElementById("pFullName").value.trim();
+    const newEmail = document.getElementById("pEmail").value.trim();
+    if(newName)  user.name  = newName;
+    if(newEmail) user.email = newEmail;
+    localStorage.setItem("sjb_user", JSON.stringify(user));
+    localStorage.setItem(PROFILE_KEY, JSON.stringify(ext));
+
+    showToast("Profile saved successfully ✓");
+    loadProfile();
+  };
+
+  window.resetProfile = function(){
+    if(confirm("Discard unsaved changes?")) loadProfile();
+  };
+
+  document.addEventListener("DOMContentLoaded", loadProfile);
+})();
+</script>
+</body>
+</html>

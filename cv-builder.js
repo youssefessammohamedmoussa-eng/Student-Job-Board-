@@ -316,18 +316,49 @@ function openPrintWindow(sheetMarkup, title){
     <head>
       <meta charset="utf-8" />
       <meta name="viewport" content="width=device-width,initial-scale=1" />
-      <title>${safeTitle}</title>
+      <title></title>
       <link rel="stylesheet" href="${styleHref}" />
       <style>
+        @page{
+          size:A4;
+          margin:0;
+        }
+        html,
         body{
           margin:0;
-          padding:24px;
           background:#ffffff;
+        }
+        body.cvPrintBody{
+          -webkit-print-color-adjust:exact;
+          print-color-adjust:exact;
+        }
+        .cvPrintDocument{
+          margin:0;
+          padding:0;
+        }
+        @media screen{
+          body.cvPrintBody{
+            padding:24px;
+          }
+          .cvPrintDocument{
+            margin:0 auto;
+            max-width:210mm;
+          }
+        }
+        @media print{
+          body.cvPrintBody{
+            padding:0 !important;
+          }
+          .cvPrintDocument{
+            width:100%;
+          }
         }
       </style>
     </head>
-    <body>
-      ${sheetMarkup}
+    <body class="cvPrintBody">
+      <main class="cvPrintDocument" aria-label="${safeTitle}">
+        ${sheetMarkup}
+      </main>
     </body>
     </html>
   `);

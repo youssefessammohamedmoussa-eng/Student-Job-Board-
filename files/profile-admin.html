@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SJB | Admin Profile</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .avatarCircle {
+      width: 88px; height: 88px; border-radius: 50%;
+      background: #7c3aed; color: #fff;
+      font-size: 36px; font-weight: 900;
+      display: flex; align-items: center; justify-content: center;
+      border: 4px solid #ede9fe; flex-shrink: 0;
+    }
+    .profileHero { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+    .profileMeta h2 { margin: 0 0 4px; font-size: 22px; }
+    .profileGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 18px; }
+    @media(max-width:640px){ .profileGrid { grid-template-columns: 1fr; } }
+    .profileCard {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 22px 24px;
+    }
+    .profileCard h4 {
+      margin: 0 0 16px; font-size: 13px; text-transform: uppercase;
+      letter-spacing: .6px; color: var(--muted);
+    }
+    .infoRow { display: flex; flex-direction: column; gap: 12px; }
+    .infoItem label { font-size: 12px; color: var(--muted); display: block; margin-bottom: 3px; font-weight: 600; }
+    .infoItem input {
+      width: 100%; padding: 9px 12px; border: 1px solid var(--border);
+      border-radius: 10px; font-size: 14px; color: var(--text);
+      background: var(--bg); outline: none; transition: border-color .2s;
+    }
+    .infoItem input:focus { border-color: var(--primary); background: #fff; }
+    .infoItem input[readonly] { color: var(--muted); cursor: default; }
+    .statsRow { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 18px; }
+    .statBox {
+      flex: 1; min-width: 100px; background: #ede9fe;
+      border-radius: 14px; padding: 16px 14px; text-align: center;
+    }
+    .statBox .num { font-size: 28px; font-weight: 900; color: #7c3aed; }
+    .statBox .lbl { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .profileFullCard { grid-column: 1 / -1; }
+    .saveBar { margin-top: 18px; display: flex; justify-content: flex-end; gap: 10px; }
+
+    /* Job approval table */
+    .approvalTable { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .approvalTable th {
+      text-align: left; padding: 10px 12px; font-size: 12px;
+      text-transform: uppercase; letter-spacing: .5px; color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+    [dir="rtl"] .approvalTable th { text-align: right; }
+    .approvalTable td { padding: 12px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    .approvalTable tr:last-child td { border-bottom: none; }
+    .approvalTable tr:hover td { background: var(--bg); }
+    .statusBadge {
+      display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 700;
+    }
+    .statusBadge.pending  { background: #fef9c3; color: #854d0e; }
+    .statusBadge.approved { background: #dcfce7; color: #166534; }
+    .statusBadge.rejected { background: #fee2e2; color: #991b1b; }
+    .actionBtns { display: flex; gap: 6px; flex-wrap: wrap; }
+    .btn.approve { background: #16a34a; color: #fff; border: none; font-size: 13px; padding: 6px 14px; }
+    .btn.approve:hover { background: #15803d; }
+    .btn.reject  { background: #dc2626; color: #fff; border: none; font-size: 13px; padding: 6px 14px; }
+    .btn.reject:hover  { background: #b91c1c; }
+    .tabRow { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+    .tabBtn {
+      padding: 7px 18px; border-radius: 30px; font-size: 13px; font-weight: 600;
+      border: 1.5px solid var(--border); background: var(--bg); color: var(--muted);
+      cursor: pointer; transition: all .15s;
+    }
+    .tabBtn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .toast {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+      background: var(--primary); color: #fff; padding: 12px 28px;
+      border-radius: 40px; font-size: 14px; font-weight: 600;
+      box-shadow: 0 8px 24px rgba(11,58,103,.25);
+      opacity: 0; transition: opacity .3s; pointer-events: none; z-index: 9999;
+    }
+    .toast.show { opacity: 1; }
+    .emptyMsg { text-align: center; padding: 32px; color: var(--muted); }
+    .jobDetailExpand {
+      font-size: 12px; color: var(--muted); margin-top: 3px;
+      max-width: 260px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+  </style>
+</head>
+<body>
+
+<header class="container topbar">
+  <a class="brand" href="index.html">
+    <img src="logo1.png" alt="SJB Logo">
+    <div>
+      <div class="title">SJB</div>
+      <div class="subtitle" data-i18n="brandSubtitle">Unlock Your Potential</div>
+    </div>
+  </a>
+  <nav class="nav">
+    <a href="index.html" data-i18n="navHome">Home</a>
+    <a href="jobs.html" data-i18n="navJobs">Jobs</a>
+    <a href="dashboard-admin.html">Dashboard</a>
+    <a href="profile-admin.html" class="active">Profile</a>
+  </nav>
+  <div class="actions">
+    <button class="lang" id="langBtn">AR</button>
+    <button class="btn outline" onclick="logout()">Logout</button>
+  </div>
+</header>
+
+<main class="container">
+  <div class="hero">
+    <h1>Admin Profile</h1>
+    <div class="small" style="margin-top:6px">Manage your admin info and review job post submissions.</div>
+    <div class="decor"><span></span><i></i><i></i><span></span></div>
+  </div>
+
+  <div id="accessGuard"></div>
+
+  <div id="profileBody" style="display:none">
+
+    <!-- Admin Hero -->
+    <section class="panel" style="margin-bottom:18px">
+      <div class="profileHero">
+        <div class="avatarCircle" id="avatarLetter">A</div>
+        <div class="profileMeta">
+          <h2 id="heroName">Admin</h2>
+          <div class="small" id="heroEmail">—</div>
+          <div class="meta" style="margin-top:8px">
+            <span class="pill" style="background:#ede9fe;color:#7c3aed">Administrator</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="statsRow">
+        <div class="statBox">
+          <div class="num" id="statTotal">0</div>
+          <div class="lbl">Total Submissions</div>
+        </div>
+        <div class="statBox">
+          <div class="num" id="statPending">0</div>
+          <div class="lbl">Pending Review</div>
+        </div>
+        <div class="statBox">
+          <div class="num" id="statApproved">0</div>
+          <div class="lbl">Approved</div>
+        </div>
+        <div class="statBox">
+          <div class="num" id="statRejected">0</div>
+          <div class="lbl">Rejected</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Edit Grid -->
+    <div class="profileGrid">
+      <div class="profileCard">
+        <h4>Admin Info</h4>
+        <div class="infoRow">
+          <div class="infoItem">
+            <label>Display Name</label>
+            <input id="pName" type="text" placeholder="Admin name" />
+          </div>
+          <div class="infoItem">
+            <label>Email</label>
+            <input id="pEmail" type="email" placeholder="admin@sjb.com" />
+          </div>
+        </div>
+      </div>
+      <div class="profileCard">
+        <h4>Account</h4>
+        <div class="infoRow">
+          <div class="infoItem">
+            <label>Role</label>
+            <input value="Administrator" readonly />
+          </div>
+          <div class="infoItem">
+            <label>Access Level</label>
+            <input value="Full Access" readonly />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="saveBar">
+      <button class="btn outline" onclick="resetProfile()">Discard</button>
+      <button class="btn primary" onclick="saveProfile()">Save Changes</button>
+    </div>
+
+    <!-- Job Approval Section -->
+    <section class="panel profileFullCard" style="margin-top:24px">
+      <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:16px">
+        <div>
+          <div class="badgeRole" style="background:#ede9fe;color:#7c3aed">Job Post Review</div>
+          <h3 style="margin:8px 0 0">Approve / Reject Job Submissions</h3>
+          <div class="small" style="margin-top:4px">Review jobs posted by companies before they go live.</div>
+        </div>
+        <button class="btn outline" onclick="refreshApprovalList()">↻ Refresh</button>
+      </div>
+
+      <div class="tabRow" id="filterTabs">
+        <button class="tabBtn active" data-filter="all"    onclick="setFilter('all')">All</button>
+        <button class="tabBtn"        data-filter="pending" onclick="setFilter('pending')">Pending</button>
+        <button class="tabBtn"        data-filter="approved" onclick="setFilter('approved')">Approved</button>
+        <button class="tabBtn"        data-filter="rejected" onclick="setFilter('rejected')">Rejected</button>
+      </div>
+
+      <div id="approvalBody"></div>
+    </section>
+
+  </div><!-- /profileBody -->
+</main>
+
+<footer class="footer">
+  <div class="container" data-i18n="footerText">© 2026 Student Job Board. All rights reserved.</div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script src="i18n.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script>
+(function(){
+  const ADMIN_PROFILE_KEY  = "sjb_admin_profile_ext";
+  const COMPANY_JOBS_KEY   = "sjb_company_jobs";
+  let currentFilter = "all";
+
+  function esc(s){ const d=document.createElement("div"); d.textContent=s||""; return d.innerHTML; }
+
+  function showToast(msg, color){
+    const el = document.getElementById("toast");
+    el.textContent = msg;
+    el.style.background = color || "var(--primary)";
+    el.classList.add("show");
+    setTimeout(()=> el.classList.remove("show"), 2600);
+  }
+
+  function getAllJobs(){
+    return JSON.parse(localStorage.getItem(COMPANY_JOBS_KEY) || "[]");
+  }
+  function saveAllJobs(jobs){
+    localStorage.setItem(COMPANY_JOBS_KEY, JSON.stringify(jobs));
+  }
+
+  window.setFilter = function(f){
+    currentFilter = f;
+    document.querySelectorAll(".tabBtn").forEach(b => b.classList.toggle("active", b.dataset.filter === f));
+    renderApprovalTable();
+  };
+
+  window.approveJob = function(id){
+    const jobs = getAllJobs();
+    const job = jobs.find(j => String(j.id) === String(id));
+    if(job){ job.status = "approved"; saveAllJobs(jobs); }
+    showToast("Job approved ✓", "#16a34a");
+    refreshApprovalList();
+  };
+
+  window.rejectJob = function(id){
+    const jobs = getAllJobs();
+    const job = jobs.find(j => String(j.id) === String(id));
+    if(job){ job.status = "rejected"; saveAllJobs(jobs); }
+    showToast("Job rejected", "#dc2626");
+    refreshApprovalList();
+  };
+
+  function renderApprovalTable(){
+    const jobs = getAllJobs();
+    const filtered = currentFilter === "all" ? jobs
+      : jobs.filter(j => (j.status || "pending") === currentFilter);
+
+    // Update stats from all jobs
+    const pending  = jobs.filter(j => !j.status || j.status === "pending").length;
+    const approved = jobs.filter(j => j.status === "approved").length;
+    const rejected = jobs.filter(j => j.status === "rejected").length;
+    document.getElementById("statTotal").textContent   = jobs.length;
+    document.getElementById("statPending").textContent  = pending;
+    document.getElementById("statApproved").textContent = approved;
+    document.getElementById("statRejected").textContent = rejected;
+
+    const body = document.getElementById("approvalBody");
+    if(!filtered.length){
+      body.innerHTML = `<div class="emptyMsg">No ${currentFilter === "all" ? "" : currentFilter} job submissions found.</div>`;
+      return;
+    }
+
+    body.innerHTML = `
+      <div style="overflow-x:auto">
+        <table class="approvalTable">
+          <thead>
+            <tr>
+              <th>Job Title</th>
+              <th>Company</th>
+              <th>Location</th>
+              <th>Type</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${filtered.map(job => {
+              const status = job.status || "pending";
+              const isPending  = status === "pending";
+              const isApproved = status === "approved";
+              return `
+                <tr>
+                  <td>
+                    <strong>${esc(job.title)}</strong>
+                    <div class="jobDetailExpand">${esc(job.description || "")}</div>
+                  </td>
+                  <td>${esc(job.companyName || "—")}</td>
+                  <td>${esc(job.location || "—")}</td>
+                  <td>${esc(job.type || "—")}</td>
+                  <td>
+                    <span class="statusBadge ${status}">
+                      ${status.charAt(0).toUpperCase() + status.slice(1)}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="actionBtns">
+                      ${isPending || !isApproved ? `<button class="btn approve" onclick="approveJob('${job.id}')">Approve</button>` : ""}
+                      ${isPending || isApproved  ? `<button class="btn reject"  onclick="rejectJob('${job.id}')">Reject</button>`  : ""}
+                      ${status === "rejected"    ? `<button class="btn approve" onclick="approveJob('${job.id}')">Re-approve</button>` : ""}
+                    </div>
+                  </td>
+                </tr>
+              `;
+            }).join("")}
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+
+  window.refreshApprovalList = renderApprovalTable;
+
+  function loadProfile(){
+    const user  = (typeof getUser === "function")  ? getUser()  : null;
+    const role  = (typeof getRole === "function")  ? getRole()  : null;
+    const guard = document.getElementById("accessGuard");
+    const body  = document.getElementById("profileBody");
+
+    if(!user || role !== "admin"){
+      body.style.display = "none";
+      guard.innerHTML = `
+        <section class="panel" style="text-align:center">
+          <div class="badgeRole">Access Restricted</div>
+          <div class="small" style="margin-top:10px">This page is for admin accounts only.</div>
+          <div class="stack" style="justify-content:center;margin-top:14px">
+            <a class="btn primary" href="auth.html">Login</a>
+            <a class="btn outline" href="index.html">Home</a>
+          </div>
+        </section>`;
+      return;
+    }
+
+    guard.innerHTML = "";
+    body.style.display = "block";
+
+    const ext = JSON.parse(localStorage.getItem(ADMIN_PROFILE_KEY) || "{}");
+
+    document.getElementById("avatarLetter").textContent = (user.name || "A").slice(0,1).toUpperCase();
+    document.getElementById("heroName").textContent = user.name || "Admin";
+    document.getElementById("heroEmail").textContent = user.email || "—";
+
+    document.getElementById("pName").value  = user.name || "";
+    document.getElementById("pEmail").value = user.email || "";
+
+    renderApprovalTable();
+  }
+
+  window.saveProfile = function(){
+    const user = (typeof getUser === "function") ? getUser() : {};
+    const newName  = document.getElementById("pName").value.trim();
+    const newEmail = document.getElementById("pEmail").value.trim();
+    if(newName)  user.name  = newName;
+    if(newEmail) user.email = newEmail;
+    localStorage.setItem("sjb_user", JSON.stringify(user));
+    showToast("Admin profile saved ✓");
+    loadProfile();
+  };
+
+  window.resetProfile = function(){
+    if(confirm("Discard unsaved changes?")) loadProfile();
+  };
+
+  document.addEventListener("DOMContentLoaded", loadProfile);
+})();
+</script>
+</body>
+</html>

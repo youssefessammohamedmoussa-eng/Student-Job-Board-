@@ -1,0 +1,87 @@
+{% load static %}
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SJB | Profile</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}" />
+</head>
+<body>
+  <header class="container topbar">
+    <a class="brand" href="{% url 'home' %}">
+      <img src="{% static 'logo1.png' %}" alt="SJB Logo">
+      <div>
+        <div class="title">SJB</div>
+        <div class="subtitle">Unlock Your Potential</div>
+      </div>
+    </a>
+
+    <nav class="nav">
+      <a href="{% url 'home' %}" data-i18n="navHome">Home</a>
+      <a href="{% url 'jobs' %}" data-i18n="navJobs">Jobs</a>
+      <a href="{{ dashboard_url }}" data-i18n="navDash">Dashboard</a>
+      <a href="{% url 'profile' %}" class="active">Profile</a>
+    </nav>
+
+    <div class="actions">
+      <button class="lang" id="langBtn">AR</button>
+      <a class="btn outline" href="{{ dashboard_url }}">Dashboard</a>
+      <a class="btn outline" href="{% url 'logout' %}">Logout</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="hero">
+      <h1>My Profile</h1>
+      <div class="small" style="margin-top:8px">Your account details and sign-in method.</div>
+      <div class="decor"><span></span><i></i><i></i><span></span></div>
+    </div>
+
+    <section class="panel" style="max-width:760px;margin:0 auto">
+      <div class="dashboardCardHead">
+        <div>
+          <div class="badgeRole">{{ request.user.role|title }}</div>
+          <h2 style="margin:10px 0 0">{{ request.user.get_full_name|default:request.user.username }}</h2>
+          <div class="small" style="margin-top:8px">{{ request.user.email }}</div>
+        </div>
+      </div>
+
+      <div class="grid" style="margin-top:18px">
+        <div class="panel">
+          <b>Role</b>
+          <div class="small" style="margin-top:8px">{{ request.user.role|title }}</div>
+        </div>
+        <div class="panel">
+          <b>Location</b>
+          <div class="small" style="margin-top:8px">{{ request.user.location|default:"Not set" }}</div>
+        </div>
+        <div class="panel">
+          <b>Phone</b>
+          <div class="small" style="margin-top:8px">{{ request.user.phone|default:"Not set" }}</div>
+        </div>
+        <div class="panel">
+          <b>Username</b>
+          <div class="small" style="margin-top:8px">{{ request.user.username }}</div>
+        </div>
+        <div class="panel">
+          <b>Sign-in Method</b>
+          <div class="small" style="margin-top:8px">{{ auth_provider }}</div>
+        </div>
+        <div class="panel" style="grid-column:1/-1">
+          <b>{{ profile_note_label }}</b>
+          <div class="small" style="margin-top:8px">{{ request.user.profile_note|default:"Not set" }}</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">© 2026 Student Job Board. All rights reserved.</div>
+  </footer>
+
+  <script src="{% static 'i18n.js' %}"></script>
+  <script src="{% static 'data.js' %}"></script>
+  <script src="{% static 'app.js' %}"></script>
+</body>
+</html>

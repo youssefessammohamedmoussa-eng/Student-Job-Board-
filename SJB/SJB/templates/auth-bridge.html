@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SJB | Signing You In</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #f3f4f6;
+      color: #0f172a;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+    .card {
+      width: min(520px, 92vw);
+      padding: 32px 28px;
+      background: #fff;
+      border: 1px solid rgba(15, 23, 42, .12);
+      border-radius: 18px;
+      box-shadow: 0 14px 32px rgba(15, 23, 42, .12);
+      text-align: center;
+    }
+    .small { color: #64748b; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1 style="margin:0;font-size:24px">Signing you in...</h1>
+    <div class="small">Your account is ready. Redirecting now.</div>
+  </div>
+
+  <script>
+    localStorage.setItem("sjb_role", "{{ frontend_role|escapejs }}");
+    localStorage.setItem("sjb_user", '{{ user_payload_json|escapejs }}');
+    window.location.replace("{{ target_url|escapejs }}");
+  </script>
+</body>
+</html>

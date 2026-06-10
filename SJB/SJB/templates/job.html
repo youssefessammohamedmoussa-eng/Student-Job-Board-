@@ -1,0 +1,148 @@
+{% load static %}
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SJB | Job</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+
+<body>
+  <header class="container topbar">
+    <a class="brand" href="{% url 'index' %}">
+      <img src="{% static 'logo1.png' %}" alt="SJB Logo">
+      <div>
+        <div class="title">SJB</div>
+        <div class="subtitle" data-i18n="brandSubtitle">Unlock Your Potential</div>
+      </div>
+    </a>
+
+    <nav class="nav">
+      <a href="{% url 'home' %}" data-i18n="navHome">Home</a>
+      <a href="{% url 'jobs' %}" data-i18n="navJobs" class="active">Jobs</a>
+      {% if user.is_authenticated %}
+        {% if user.role == 'student' %}
+          <a href="{% url 'dashboard-user' %}" id="navDash" data-i18n="navDash">Dashboard</a>
+        {% elif user.role == 'company' %}
+          <a href="{% url 'dashboard-company' %}" id="navDash" data-i18n="navDash">Dashboard</a>
+        {% elif user.role == 'admin' %}
+          <a href="{% url 'dashboard-admin' %}" id="navDash" data-i18n="navDash">Dashboard</a>
+        {% endif %}
+        <a href="{% url 'logout' %}" id="navLogin" data-i18n="logout">Logout</a>
+      {% else %}
+        <a href="{% url 'auth' %}" id="navLogin" data-i18n="navLogin">Login</a>
+        <a href="{% url 'signup' %}" id="navReg" data-i18n="SignUp">Register</a>
+      {% endif %}
+    </nav>
+
+    <div class="actions">
+      <button class="lang" id="langBtn">AR</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="hero">
+      <h1 data-i18n="jobDetails">Job Details</h1>
+      <div class="small" style="margin-top:10px" data-i18n="jobHint">
+        Open a job from the Jobs page to view full details.
+      </div>
+      <div class="decor"><span></span><i></i><i></i><span></span></div>
+    </div>
+
+    <!-- dynamic content -->
+    <div id="jobDetailsWrap"></div>
+
+    <!-- nice fallback if opened without id -->
+    <div class="panel" id="missingId" style="display:none; text-align:center">
+      <b data-i18n="missingIdTitle">No job selected</b>
+      <div class="small" style="margin-top:8px" data-i18n="missingIdDesc">
+        Please go back and choose a job from the list.
+      </div>
+      <div style="margin-top:12px">
+        <a class="btn primary" href="{% url 'jobs' %}" data-i18n="backJobs">Back to Jobs</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Apply Modal -->
+  <div class="modalOverlay" id="applyOverlay" onclick="if(event.target.id==='applyOverlay') closeApply()">
+    <div class="modal">
+      <div class="modalHeader">
+        <h3 data-i18n="applyTitle">Apply for this job</h3>
+        <button class="btn outline" type="button" onclick="closeApply()" data-i18n="close">Close</button>
+      </div>
+      <div class="hr"></div>
+
+      <form id="applyForm">
+        <input type="hidden" id="applyJobId" />
+
+        <div class="formGrid">
+          <div class="field">
+            <label data-i18n="name">Full Name</label>
+            <input id="appName" type="text" required />
+          </div>
+
+          <div class="field">
+            <label data-i18n="email">Email</label>
+            <input id="appEmail" type="email" required />
+          </div>
+
+          <div class="field">
+            <label data-i18n="phone">Mobile Number</label>
+            <input id="appPhone" type="tel" required />
+          </div>
+
+          <div class="field">
+            <label data-i18n="uploadCv">Upload CV</label>
+            <input id="appCv" type="file" accept=".pdf,.doc,.docx" required />
+          </div>
+        </div>
+
+        <div class="stack" style="margin-top:14px; justify-content:flex-end">
+          <button class="btn accent" type="submit" data-i18n="submit">Submit Application</button>
+        </div>
+      </form>
+
+      <div class="small" style="margin-top:10px" data-i18n="cvNote">
+        (Demo) CV is saved as filename only.
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container" data-i18n="footerText">© 2026 Student Job Board. All rights reserved.</div>
+  </footer>
+
+  <script src="{% static 'i18n.js' %}"></script>
+  <script src="{% static 'data.js' %}"></script>
+  <script src="{% static 'app.js' %}"></script>
+
+  <!-- small safety for missing id -->
+  <script>
+    (function(){
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get("id");
+      if(!id){
+        const wrap = document.getElementById("jobDetailsWrap");
+        const miss = document.getElementById("missingId");
+        if(wrap) wrap.style.display = "none";
+        if(miss) miss.style.display = "block";
+      }
+    })();
+  </script>
+  <script>
+  // if someone opened job.html without id, redirect back to jobs
+  (function(){
+    const params = new URLSearchParams(location.search);
+    if(!params.get("id")){
+      // go back automatically after 1 sec (better UX)
+      setTimeout(()=>{ location.href = "{% url 'jobs' %}"; }, 800);
+    }
+  })();
+</script>
+
+</body>
+</html>
