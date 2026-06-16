@@ -32,7 +32,7 @@
     <section class="hero">
       <h1 data-i18n="cvBuilderTitle">CV Builder</h1>
       <div class="small" style="margin-top:10px" data-i18n="cvBuilderDesc">
-        Build a polished CV, save it locally in SJB, and print it as a PDF when you are ready.
+        Build a polished CV, save it locally in SJB, and download it as a PDF when you are ready.
       </div>
       <div class="decor"><span></span><i></i><i></i><span></span></div>
     </section>
@@ -42,7 +42,7 @@
         <div class="badgeRole" data-i18n="cvBuilderFormTitle">Build Your Details</div>
         <h2 style="margin:10px 0 0" data-i18n="cvBuilderPreviewTitle">Live CV Preview</h2>
         <div class="small" style="margin-top:8px" data-i18n="cvPreviewHint">
-          Use the print button to open your browser's Save as PDF flow with the preview already formatted.
+          Use Download PDF to save a multi-page CV file directly from this builder.
         </div>
       </div>
       <div class="stack">
@@ -129,7 +129,7 @@
           <div class="stack btnRowEnd" style="margin-top:20px">
             <button type="button" class="btn outline" id="resetCvBtn" data-i18n="cvReset">Reset CV</button>
             <button type="button" class="btn primary" id="saveCvBtn" data-i18n="cvSaveDraft">Save Draft</button>
-            <button type="button" class="btn accent" id="printCvBtn" data-i18n="cvPrint">Print / Save PDF</button>
+            <button type="button" class="btn accent" id="exportCvBtn" data-i18n="cvExportPdf">Download PDF</button>
           </div>
 
           <div class="small" id="cvSaveStatus" style="margin-top:12px"></div>
@@ -139,7 +139,7 @@
       <section class="panel cvBuilderPreviewPanel">
         <div class="badgeRole" data-i18n="cvBuilderPreviewTitle">Live CV Preview</div>
         <div class="small previewNote" data-i18n="cvPreviewHint">
-          Use the print button to open your browser's Save as PDF flow with the preview already formatted.
+          Use Download PDF to save a multi-page CV file directly from this builder.
         </div>
         <div class="cvSheet" id="cvPreviewSheet"></div>
       </section>
